@@ -1,1 +1,13 @@
-.atsuo, *.atsln, *.xml, *.ccproj, *.eep, *.elf, *.hex, *.lss, *.map, *.srec, *.d, *.o, *.mk, Makefile
+.atsuo
+*.atsln
+*.xml
+*.ccproj
+*.eep
+*.elf
+*.hex
+*.lss
+*.map
+*.srec
+*.d
+*.o
+*.mk
