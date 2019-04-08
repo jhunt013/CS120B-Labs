@@ -30,10 +30,10 @@ int main(void)
 	   if((PIN_A & 0x02) == 0x02){	//checking second bit (index 1)
 		   cnt_used++;
 	   }
-	   if ((PIN_A & 0x03) == 0x03){	//check third bit (index 2)
+	   if ((PIN_A & 0x04) == 0x04){	//check third bit (index 2)
 		   cnt_used++;
 	   }
-	   if ((PIN_A & 0x04) == 0x04){	//check fourth bit (index 3)
+	   if ((PIN_A & 0x08) == 0x08){	//check fourth bit (index 3)
 		   cnt_used++;
 	   }
 
