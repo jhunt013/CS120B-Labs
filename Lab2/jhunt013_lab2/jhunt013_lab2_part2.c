@@ -1,8 +1,13 @@
 /*
  * jhunt013_lab2_part2.c
- *
+ * Partner 1 Name & E-mail: Jennifer Hunter, jhunt013@ucr.edu
+ * Lab Section: 028
+ * Assignment: Lab #2  Exercise #2
+ * Exercise Description: [optional - include for your own benefit]
+ * Port A's pins 3 to 0, each connect to a parking space sensor, 1 meaning a car is parked in the space, of a four-space parking lot. 
+ * Write a program that outputs in binary on port C the number of available spaces (Hint: declare a variable "unsigned char cntavail"
+ * you can assign a number to a port as follows: PORTC = cntavail;).
  * Created: 4/4/2019 6:56:04 PM
- * Author : jenny
  */ 
 
 #include <avr/io.h>
