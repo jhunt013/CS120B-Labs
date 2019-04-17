@@ -5,7 +5,7 @@
  *	Partner 1 Name & E-mail: Marcus Yee myee005@ucr.edu
  *	Partner 2 Name & E-mail: Jennifer Hunter jhunt013@ucr.edu
  *	Lab Section: 028
- *	Assignment: Lab #5  Exercise # 2
+ *	Assignment: Lab #5  Exercise # 3
  *	I acknowledge all content contained herein, excluding template or example
  *	code, is my own original work.
  

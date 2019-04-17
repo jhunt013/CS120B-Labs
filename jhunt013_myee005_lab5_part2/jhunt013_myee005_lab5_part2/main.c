@@ -68,7 +68,10 @@ void CntSM(){
 		break;
 		
 		case increment:
-		if(GetBit(~PINA, 0)){
+		if(GetBit(~PINA, 0) && GetBit(~PINA, 1)){
+			state = reset;
+		}
+		else if(GetBit(~PINA, 0)){
 			state = increment;
 		}
 		else {
@@ -80,7 +83,10 @@ void CntSM(){
 		break;
 		
 		case decrement:
-		if(GetBit(~PINA, 1)){
+		if(GetBit(~PINA, 0) && GetBit(~PINA, 1)){
+			state = reset;
+		}
+		else if(GetBit(~PINA, 1)){
 			state = decrement;
 		}
 		else {
@@ -118,7 +124,7 @@ void CntSM(){
 			PORTB = PORTB;
 			break;
 		case release_1:
-			//PORTB = 0x00;
+			PORTB = 0x00;
 			break;
 		case increment:
 			PORTB = PORTB;
