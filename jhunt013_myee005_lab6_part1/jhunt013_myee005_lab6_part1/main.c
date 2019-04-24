@@ -111,7 +111,7 @@ int main(void)
 {
     DDRB = 0xFF; // Set port B to output
     PORTB = 0x00; // Init port B to 0s
-    TimerSet(100);
+    TimerSet(125);
     TimerOn();
 		
     while(1) {

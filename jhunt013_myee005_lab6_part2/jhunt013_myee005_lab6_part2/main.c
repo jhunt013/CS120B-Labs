@@ -153,7 +153,7 @@ int main(void)
 	PORTB = 0x00; // Init port B to 0s
 	DDRA = 0x00;
 	PORTA = 0xFF;
-	TimerSet(100);
+	TimerSet(50);
 	TimerOn();
 	unsigned char old_press = 0x00;
 	unsigned char new_press = 0x00;
