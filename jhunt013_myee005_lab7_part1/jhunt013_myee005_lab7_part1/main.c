@@ -37,21 +37,21 @@ void CntSM(){
 		LCD_WriteData(count + '0');
 		break;
 		case wait:
-		if (GetBit(~PINA, 0) && GetBit(~PINA, 1)) {
+		if (GetBit(~PINA, 0) && GetBit(~PINA, 1)) { //both buttons pressed
 			state = reset;
 		}
-		else if (GetBit(~PINA, 0)) {
+		else if (GetBit(~PINA, 0)) { //inc button pressed
 			state = increment;
 		}
-		else if (GetBit(~PINA, 1)) {
+		else if (GetBit(~PINA, 1)) { //dec button pressed
 			state = decrement;
 		}
-		else {
-			state = wait;
+		else { //no buttons pressed
+			state = wait; 
 		}
 		break;
 		case reset:
-		if(GetBit(~PINA, 0) && GetBit(~PINA, 1)){
+		if(GetBit(~PINA, 0) && GetBit(~PINA, 1)){ //if both buttons pressed
 			state = reset;
 			count = 0;
 		}
@@ -59,7 +59,7 @@ void CntSM(){
 			state = release_1;
 		}
 		break;
-		case release_1:
+		case release_1: //reset pressed
 		count = 0;
 		state = wait;
 		LCD_Cursor(1);
@@ -67,11 +67,11 @@ void CntSM(){
 		break;
 		
 		case increment:
-		if (GetBit(~PINA, 0) && GetBit(~PINA, 1)) {
+		if (GetBit(~PINA, 0) && GetBit(~PINA, 1)) { //both buttons pressed
 			state = reset;
 			count = 0;
 		}
-		else if(GetBit(~PINA, 0)){
+		else if(GetBit(~PINA, 0)){ //inc pressed
 			state = increment;
 		}
 		else {
@@ -79,7 +79,7 @@ void CntSM(){
 		}
 		break;
 		case release_2:
-		if (count >= 9) {
+		if (count >= 9) { //inc pressed
 			count = 9;
 		}
 		else {
@@ -91,18 +91,18 @@ void CntSM(){
 		break;
 		
 		case decrement:
-		if (GetBit(~PINA, 0) && GetBit(~PINA, 1)) {
+		if (GetBit(~PINA, 0) && GetBit(~PINA, 1)) { //both buttons pressed
 			state = reset;
 			count = 0;
 		}
-		else if(GetBit(~PINA, 1)){
+		else if(GetBit(~PINA, 1)){ // dec pressed
 			state = decrement;
 		}
 		else {
 			state = release_3;
 		}
 		break;
-		case release_3:
+		case release_3: //after dec pressed
 		if (count <= 0) {
 			count = 0;
 		}

@@ -1,5 +1,5 @@
 /*
-* jhunt013_myee005_lab6_part1.c
+* jhunt013_myee005_lab6_part2.c
 *
 * Created: 4/20/2019 11:58:37 AM
 * Partner 1 Name & E-mail: Jennifer Hunter jhunt013@ucr.edu
@@ -20,7 +20,7 @@ unsigned long _avr_timer_M = 1;	// Start count from here, down to 0. Default 1 m
 unsigned long _avr_timer_cntcurr = 0;	// Current internal count of 1ms ticks
 unsigned char score = 5;
 
-enum States{init, led_1, led_2, led_3, wait_1, button, win} state;
+enum States{init, led_1, led_2, led_3, wait_1, button} state;
 
 void TickSM(unsigned char timer,unsigned char press){
 	switch(state){ //transitions
@@ -56,9 +56,6 @@ void TickSM(unsigned char timer,unsigned char press){
 		}
 		break;
 		case button:
-		if(score == 9){
-			state = win;
-		}
 		if( (press) == 1){
 			state = init;
 		}
@@ -66,8 +63,6 @@ void TickSM(unsigned char timer,unsigned char press){
 			state = button;
 		}
 		break;
-		case win:
-		state = win;
 	
 		default:
 		state = init;
@@ -89,8 +84,15 @@ switch(state){ //actions
 	break;
 	case led_2:
 	PORTB = 0x02;
+	if(score == 9){
+		LCD_DisplayString(1, "WINNER");
+		break;
+	}
+	else{
 		LCD_Cursor(1);
 		LCD_WriteData(score + '0');
+	}
+		
 	break;
 	case led_3:
 	PORTB = 0x04;
@@ -98,11 +100,6 @@ switch(state){ //actions
 		LCD_WriteData(score + '0');
 	break;
 	case button:
-	break;
-	case win:
-	
-			LCD_Cursor(1);
-			LCD_WriteData("WINNER");
 	break;
 	default:
 	PORTB = 0x00;
