@@ -1,7 +1,7 @@
 /*
- * jhunt013_myee005_lab8_part2.c
+ * jhunt013_myee005_lab8_part3.c
  *
- * Created: 4/29/2019 4:48:15 PM
+ * Created: 4/29/2019 4:53:03 PM
  * Author : jenny
  */ 
 
@@ -26,8 +26,13 @@ int main(void)
 	
 	while (1) {
 		unsigned short temp = ADC;
-		PORTB = temp & 0x00FF;
-		PORTD = ((temp & 0x0300) / 256);
-		
+		if (temp >= 830 / 2) {
+			PORTB = 0xFFFF;
+			PORTD = 0xFFFF;
+		}
+		else {
+			PORTB = 0x0000;
+			PORTD = 0x0000;
+		}
 	}
 }
