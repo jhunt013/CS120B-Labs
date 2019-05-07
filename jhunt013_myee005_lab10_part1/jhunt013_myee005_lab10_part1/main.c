@@ -158,10 +158,10 @@ int main(void)
     TimerSet(period);
     TimerOn();
     
-	ThreeLEDS_state = ThreeLEDS_start;
-	BlinkingLED_state = BlinkingLED_start;
+	TL_state = TL_start;
+	BL_state = BL_start;
 	
-	PORTB = threeLEDS & blinkingLED;
+	PORTB = threeLED & blinkingLED;
     while (1) 
     {
 		if(ThreeLEDS_elapsed_time >= 1000){
@@ -169,10 +169,10 @@ int main(void)
 			ThreeLEDS_elapsed_time = 0;
 		}
 		if(BlinkingLED_elapsed_time >= 1000){
-			Tick_BL());
+			Tick_BL();
 			BlinkingLED_elapsed_time = 0;
 		}
-		PORTB = threeLEDS | blinkingLED;
+		PORTB = threeLED | blinkingLED;
 		
 		while(!TimerFlag){}
 			TimerFlag = 0;
