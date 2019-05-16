@@ -65,7 +65,7 @@ void LCD_Cursor(unsigned char column) {
    } else {
       LCD_WriteCommand(0xB8 + column - 9);	// 16x1 LCD: column - 1
 											// 16x2 LCD: column - 9
-   }
+   }6
 }
 
 void delay_ms(int miliSec) //for 8 Mhz crystal
