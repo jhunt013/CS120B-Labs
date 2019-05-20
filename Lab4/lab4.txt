@@ -1,0 +1,46 @@
+sm.h
+
+EX1
+void TickSM(){
+
+	switch(state) {	//transitions
+		case Start:
+			state = init;
+			break;
+		case init:
+			state = PB0_ON;
+			break;
+		case PB0_ON:
+			if(B){
+				state = PB1_ON;
+			}
+			else {
+				state = PB0_ON;
+			}
+			break;
+		case PB1_ON:
+			if(B){
+				state = PB0_ON;
+			}
+			else {
+				state = PB1_ON;
+			}
+			break;
+		default:
+			state = Start;
+	}
+
+	switch(state){	//actions
+		case init:
+			PB0 = 0;
+			PB1 = 0;
+			break;
+		case PB0_ON:
+			PB0 = 1;
+			PB1 = 0;
+			break;
+		case PB1_ON:
+			PB0 = 0;
+			PB1 = 1;
+			break;
+	}

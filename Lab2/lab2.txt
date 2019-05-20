@@ -1,0 +1,117 @@
+Exercise 1
+
+#include <avr/io.h>
+
+int main(void){
+
+	DDRA = 0x00;	//configure input
+	PORTA = 0xFF;	// must initialize input pins to 1
+
+	DDRB = 0x01;	//initialize output
+			//bit set to 1 is being configured for output
+	PORTB = 0x00;	//initialize
+
+	unsigned char PA = PINA & 0x03;
+	unsgined char PB;
+
+	while(1){
+	if(PA == 0x01){	// if PA0 == 1 && PA1 == 0 set output to 1
+		PB = 0x01;	//set LED to 1
+	}
+	else {
+		PB = 0x00;	//set LED to 0
+	}
+	PORTB = PB;
+}
+	return 0;
+}
+
+
+Exercise 2
+
+#include <avr/io.h>
+
+int main(void){
+	DDRA = 0x00;	//configure input
+	PORTA = 0xFF;	//must initialize input pins to 1
+
+	DDRC = 0x07;	//configure output
+			//need access to first three bits --> 4'b = 0100
+	PORTC = 0x00;	//initialize to 0
+	unsigned char PINA = 0x00;
+
+	
+
+while(1){
+	unsigned char cnt_used = 0x00;	//holds number of available spaces
+
+	//check each bit to count number of available spaces
+	if((PINA & 0x01) == x01){	//check first bit (index 0)
+		cnt_used += 1;
+	}				
+	if((PINA & 0x02) == x02){	//checking second bit (index 1)
+		cnt_used +=1;
+	}
+	if ((PINA & 0x03) == 0x03){	//check third bit (index 2)
+		cnt_used += 1;
+	}
+	if ((PINA & 0x04) == 0x04){	//check fourth bit (index 3)
+		cnt_used += 1;
+	}
+
+	//output number of available spaces
+	PORTC = 0x04 - cnt_used;
+}
+	return 0;
+}
+
+		
+		
+Exercise 3
+
+#include <avr/io.h>
+
+int main(void){
+	DDRA = 0x00;	//configure input
+	PORTA = 0xFF;	//must initialize input pins to 1
+
+	DDRC = 0x87;	//configure output
+			//need access to first three bits --> 4'b = 0100 and last bit --> 1000
+	PORTC = 0x00;	//initialize to 0
+
+	unsigned char cnt_used = 0x00;	//holds number of available spaces
+	unsigned char PC;
+
+while(1){
+	//check each bit to count number of available spaces
+	if((PINA & 0x01) == x01){	//check first bit (index 0)
+		cnt_used += 1;
+	}				
+	if((PINA & 0x02) == x02){	//checking second bit (index 1)
+		cnt_used +=1;
+	}
+	if ((PINA & 0x03) == 0x03){	//check third bit (index 2)
+		cnt_used += 1;
+	}
+	if ((PINA & 0x04) == 0x04){	//check fourth bit (index 3)
+		cnt_used += 1;
+	}
+
+	//output number of available spaces
+	
+	if (cnt_aval == 4){
+		PC = (4 - cnt_used) + 0x80;	
+	}
+	else {
+		PC = (4 - cnt_used);	
+	}
+	PORTC = PC;
+
+}
+	return 0;
+}
+
+
+
+
+
