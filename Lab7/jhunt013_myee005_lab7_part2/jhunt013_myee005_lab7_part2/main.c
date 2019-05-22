@@ -72,18 +72,18 @@ void TickSM(unsigned char timer,unsigned char press){
 
 switch(state){ //actions
 	case init:
-	PORTB = 0x00;
+	PORTC = 0x00;
 	LCD_Cursor(1);
 	LCD_WriteData(score + '0');
 
 	break;
 	case led_1:
-	PORTB = 0x01;
+	PORTC = 0x01;
 		LCD_Cursor(1);
 		LCD_WriteData(score + '0');
 	break;
 	case led_2:
-	PORTB = 0x02;
+	PORTC = 0x02;
 	if(score == 9){
 		LCD_DisplayString(1, "WINNER");
 		break;
@@ -95,14 +95,14 @@ switch(state){ //actions
 		
 	break;
 	case led_3:
-	PORTB = 0x04;
+	PORTC = 0x04;
 		LCD_Cursor(1);
 		LCD_WriteData(score + '0');
 	break;
 	case button:
 	break;
 	default:
-	PORTB = 0x00;
+	PORTC = 0x00;
 		LCD_Cursor(1);
 		LCD_WriteData(score + '0');
 	break;

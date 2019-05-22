@@ -7,25 +7,19 @@
 
 #include <avr/io.h>
 
-//freq[]; //used for each letter
 char user_input[];
-char play[]; //morse code translation 
+char play[128]; //morse code translation 
 
+char * morseEncode(char x){
 
-// function to encode a alphabet as
-// Morse code
-void morseEncode(char x){
-
-	// refer to the Morse table
-	// image attached in the article
 	switch (x) {
 		case 'a':
-			//return ".-";
-			play[] = {273, 0, 273, 273, 273};
+			return ".-\0";
+			//play[] = {273, 0, 273, 273, 273};
 			break;
 		case 'b':
-			//return "-...";
-			play[] = {273, 273, 273, 0, 273, 0, 273, 0, 273};
+			return "-...";
+			//play[] = {273, 273, 273, 0, 273, 0, 273, 0, 273};
 			break;
 		case 'c':
 			return "-.-.";
@@ -103,12 +97,10 @@ void morseEncode(char x){
 	}
 }
 
-void morseCode(char userInput[]) {
+void morseCode(char user_input[]) {
 
-	// character by character print
-	// Morse code
-	for (int i = 0; userInput[i]; i++){
-			cout << morseEncode(userInput[i]);
+	for (int i = 0; user_input[i]; i++){
+			cout << morseEncode(user_input[i]);
 	}
 
 	cout << endl;
@@ -118,9 +110,9 @@ void morseCode(char userInput[]) {
 int main(void)
 {
 	cout << "enter string: ";
-	cin >> userInput;
+	cin >> user_input;
 	
-	morseCode(userInput);
+	morseCode(user_input);
 	return 0;
 	while (1)
 	{
