@@ -35,7 +35,7 @@ unsigned char USART_Receive( void )
 
 int main(void)
 {
-	USART_Init(50);
+	USART_Init(50); //FIXME baud rate
 
 	/* Replace with your application code */
 	while (1)

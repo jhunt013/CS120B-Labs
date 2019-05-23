@@ -6,116 +6,224 @@
 */
 
 #include <avr/io.h>
+#include <stdio.h>
+#include <string.h>
 
-char user_input[];
-char play[128]; //morse code translation 
+#define DOT  273, 0,
+#define DASH 273, 273, 273, 0,
+#define END   -1
 
-char * morseEncode(char x){
+#define PLAY_SIZE 128
+short play[PLAY_SIZE];
 
-	switch (x) {
+void encode(char val)
+{
+	printf("Encode letter %c\n", val);
+	switch(val)
+	{
 		case 'a':
-			return ".-\0";
-			//play[] = {273, 0, 273, 273, 273};
-			break;
+		case 'A':
+		{
+			short tBuf[] = { 273, 0, 273, 273, 273, -1 };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'b':
-			return "-...";
-			//play[] = {273, 273, 273, 0, 273, 0, 273, 0, 273};
-			break;
+		case 'B':
+		{
+			short tBuf[] = { 273, 273, 273, 0, 273, 0, 273, 0, 273, 0, -1 };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'c':
-			return "-.-.";
-			break;
+		case 'C':
+		{
+			short tBuf[] = { DASH DOT DASH DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'd':
-			return "-..";
-			break;
+		case 'D':
+		{
+			short tBuf[] = { DASH DOT DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'e':
-			return ".";
-			break;
+		case 'E':
+		{
+			short tBuf[] = { DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'f':
-			return "..-.";
-			break;
+		case 'F':
+		{
+			short tBuf[] = { DOT DOT DASH DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'g':
-			return "--.";
-			break;
+		case 'G':
+		{
+			short tBuf[] = { DASH DASH DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'h':
-			return "....";
-			break;
+		case 'H':
+		{
+			short tBuf[] = { DOT DOT DOT DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'i':
-			return "..";
-			break;
+		case 'I':
+		{
+			short tBuf[] = { DOT DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'j':
-			return ".---";
-			break;
+		case 'J':
+		{
+			short tBuf[] = { DOT DASH DASH DASH END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'k':
-			return "-.-";
-			break;
+		case 'K':
+		{
+			short tBuf[] = { DASH DOT DASH END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'l':
-			return ".-..";
-			break;
+		case 'L':
+		{
+			short tBuf[] = { DOT DASH DOT DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'm':
-			return "--";
-			break;
+		case 'M':
+		{
+			short tBuf[] = { DASH DASH END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'n':
-			return "-.";
-			break;
+		case 'N':
+		{
+			short tBuf[] = { DASH DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'o':
-			return "---";
-			break;
+		case 'O':
+		{
+			short tBuf[] = { DASH DASH DASH END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'p':
-			return ".--.";
-			break;
+		case 'P':
+		{
+			short tBuf[] = { DOT DASH DASH DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'q':
-			return "--.-";
-			break;
+		case 'Q':
+		{
+			short tBuf[] = { DASH DASH DOT DASH END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'r':
-			return ".-.";
-			break;
+		case 'R':
+		{
+			short tBuf[] = { DOT DASH DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 's':
-			return "...";
-			break;
+		case 'S':
+		{
+			short tBuf[] = { DOT DOT DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 't':
-			return "-";
-			break;
+		case 'T':
+		{
+			short tBuf[] = { DASH END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'u':
-			return "..-";
-			break;
+		case 'U':
+		{
+			short tBuf[] = { DOT DOT DASH END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'v':
-			return "...-";
-			break;
+		case 'V':
+		{
+			short tBuf[] = { DOT DOT DOT DASH END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'w':
-			return ".--";
-			break;
+		case 'W':
+		{
+			short tBuf[] = { DOT DASH DASH END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'x':
-			return "-..-";
-			break;
+		case 'X':
+		{
+			short tBuf[] = { DASH DOT DOT DASH END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'y':
-			return "-.--";
-			break;
-		// for space
+		case 'Y':
+		{
+			short tBuf[] = { DASH DOT DASH DASH END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 		case 'z':
-			return "--..";
-			break;
+		case 'Z':
+		{
+			short tBuf[] = { DASH DASH DOT DOT END };
+			memcpy(play, tBuf, sizeof(tBuf));
+			return;
+		}
 	}
 }
 
-void morseCode(char user_input[]) {
-
-	for (int i = 0; user_input[i]; i++){
-			cout << morseEncode(user_input[i]);
+void playit()
+{
+	int index = 0;
+	while ( (play[index] != END) && (index < PLAY_SIZE))
+	{
+		printf("%3d) %3d\n", index, play[index]);
+		index++;
 	}
-
-	cout << endl;
 }
-
 
 int main(void)
 {
-	cout << "enter string: ";
-	cin >> user_input;
-	
-	morseCode(user_input);
-	return 0;
-	while (1)
-	{
-	}
-}
+	encode ( 'a' );
+	playit();
 
+	encode ( 'B' );
+	playit();
+
+	encode ( 'c' );
+	playit();
+}
