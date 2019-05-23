@@ -40,9 +40,9 @@ int main(void)
 	/* Replace with your application code */
 	while (1)
 	{
-		USART_Transmit(USART_Receive()-1);
-		//USART_Transmit('Z');
-		//_delay_ms(1000);
+		USART_Transmit(USART_Receive());
+	//USART_Transmit('Z');
+	//_delay_ms(1000);
 	} //connect ch1 scope to pin 15 atmega to measure width of bit ~= 1/10 millisecond (9600 baud)
 	//confirm baud rate, then use tutorial to transmit what you receive to echo input to terminal
 	
