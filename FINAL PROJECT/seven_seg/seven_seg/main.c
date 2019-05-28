@@ -13,14 +13,14 @@ int main(void)
 {
 	//Setup
 	DDRC=0xFF;    //All output
-	PORTC=0xFF;   //All segments off
+	PORTC=0x00;   //All segments off
 
 	//dp g f e d c b a
 	// a b c d e f g dp
 	
 
 	//PORTC = 0b00010001; //A
-	//PORTC = 0b11000001; //b   
+	PORTC = 0b11000001; //b   
 	//PORTC = 0b01100011; //c  
 	//PORTC = 0b10000101; //d
 	//PORTC = 0b01100001; //E
