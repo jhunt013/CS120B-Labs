@@ -61,6 +61,7 @@ void lcd_setXY(char x, char y)  /* set the column and row */
 {
 	N5110_Cmnd(x);
 	N5110_Cmnd(y);
+	
 }
 
 void N5110_clear()  /* clear the Display */
@@ -107,7 +108,7 @@ int main(void)
 	N5110_init();
 	N5110_clear();
 	lcd_setXY(0x40,0x80);
-	//N5110_Data("ElectronicWings");
+	N5110_Data("ElectronicWings");
 	// SPI_SS_Enable();
 	while(1)
 	{
