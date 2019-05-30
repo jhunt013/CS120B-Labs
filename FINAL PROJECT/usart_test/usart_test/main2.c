@@ -5,7 +5,6 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <string.h>
-#include <stdio.h>
 
 char user_string[128] = {0};
 
@@ -40,32 +39,18 @@ unsigned char USART_Receive( void )
 
 void usart_get_string(){
 	int index = 0;
-	char tmpBuf[128] = {0};
+	char tempBuf[128] = {0};
 		
-	tmpBuf[index] = USART_Receive();
-	while (tmpBuf[index] != '\r' && (index < (sizeof(tmpBuf)-1) ) ) {
-		USART_Transmit(tmpBuf[index]);
+	while( (USART_Receive() != '\n') && (index < (sizeof(tempBuf) - 1)) ){
+		tempBuf[index] = USART_Receive();
 		index++;
-		tmpBuf[index] = USART_Receive();
 	}
-	memcpy(user_string, tmpBuf, strlen(tmpBuf));
+	memcpy(user_string, tempBuf, strlen(tempBuf));
 }
 int main(void)
 {
-	unsigned int i = 0;
-	char outstring[146] = {0};
 	USART_Init(50); //FIXME baud rate
-	
-	usart_get_string();
-	//snprintf(outstring, sizeof(outstring), "DEBUG :: %s DEBUG ::\n", user_string);
-	
-	/*while (outstring[i] != 0 ) { 
-		USART_Transmit(outstring[i++]);
-		}*/
-	
-	/*for(int i =0; i < sizeof(user_string); i++){
-		USART_Transmit(user_string[i]);
-	}*/
+	printf("Encode letter %c\n");
 	
 	while (1)
 	{

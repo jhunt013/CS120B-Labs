@@ -318,7 +318,7 @@ void playit()
 
 enum States{Start, Off, Inc, Sequence}state;
 unsigned char button = 0x00;
-unsigned char 7seg = 0x00;
+unsigned char seven_disp = 0x00;
 unsigned char count = 0;
 
 void tick(){
