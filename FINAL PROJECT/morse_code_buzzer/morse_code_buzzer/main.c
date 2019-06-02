@@ -1,4 +1,3 @@
-
 #include <avr/io.h>
 #include <stdio.h>
 #include <string.h>
@@ -318,7 +317,6 @@ void playit()
 
 enum States{Start, Off, Inc, Sequence}state;
 unsigned char button = 0x00;
-unsigned char 7seg = 0x00;
 unsigned char count = 0;
 
 void tick(){
@@ -338,16 +336,13 @@ void tick(){
 		break;
 		case Sequence:
 		if(count< sizeof(play)){
-			state = Inc;
+			count++;
+			state = Sequence;
 		}
 		else if(count ==  sizeof(play)){
 			count = 0;
 			state = Off;
 		}
-		break;
-		case Inc:
-		count++;
-		state = Sequence;
 		break;
 		default:
 		state = Start;
@@ -364,8 +359,6 @@ void tick(){
 		case Sequence:
 		set_PWM(play[count]);
 		break;
-		case Inc:
-		break;
 		default:
 		break;
 	}
@@ -378,16 +371,14 @@ int main(void)
 	DDRA = 0x00; PORTA = 0xFF;
 	
 	TimerOn();
-	TimerSet(100);
+	TimerSet(300);
 	state = Start;
 	
 		/*
 	encode ( 'a' );
 	playit();
-
 	encode ( 'B' );
 	playit();
-
 	encode ( 'c' );
 	playit();
 	*/

@@ -19,6 +19,7 @@ int main(void)
 	nokia_lcd_init();
 	nokia_lcd_clear();
 	nokia_lcd_power(1);
+	//nokia_lcd_set_cursor(3,3);
 	nokia_lcd_write_string("hello", 1);
 	nokia_lcd_render();
     while (1) 

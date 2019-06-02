@@ -10,6 +10,7 @@
 #define PLAY_SIZE 128
 short play[PLAY_SIZE];
 
+
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
@@ -105,6 +106,7 @@ void PWM_off() {
 	TCCR3B = 0x00;
 }
 
+char user_string[3] = {'s', 'o', 's'};
 
 void encode(char val)
 {
@@ -120,7 +122,7 @@ void encode(char val)
 		}
 		case 'b':
 		case 'B':
-		{ 
+		{
 			short tBuf[] = { DASH DOT DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
 			return;
@@ -302,24 +304,29 @@ void playit()
 	/*
 	while ( (play[index] != END) && (index < PLAY_SIZE))
 	{
-		printf("%3d) %3d\n", index, play[index]);
-		index++;
+	printf("%3d) %3d\n", index, play[index]);
+	index++;
 	}*/
 	
-	
 	PWM_on();
+	
+	//for(int i =0; i < sizeof(user_string); i++) {
+	//encode(user_string[i]);
+	
 	while ( (play[index] != END) && (index < PLAY_SIZE))
 	{
 		set_PWM(play[index]);
 		index++;
 	}
+	//}
 	
 }
 
-enum States{Start, Off, Inc, Sequence}state;
+enum States{Start, Off, Encode, Sequence}state;
+
 unsigned char button = 0x00;
-unsigned char seven_disp = 0x00;
 unsigned char count = 0;
+unsigned int i = 0;
 
 void tick(){
 	button = ~PINA & 0x01;
@@ -338,16 +345,13 @@ void tick(){
 		break;
 		case Sequence:
 		if(count< sizeof(play)){
-			state = Inc;
+			count++;
+			state = Sequence;
 		}
 		else if(count ==  sizeof(play)){
 			count = 0;
 			state = Off;
 		}
-		break;
-		case Inc:
-		count++;
-		state = Sequence;
 		break;
 		default:
 		state = Start;
@@ -364,13 +368,10 @@ void tick(){
 		case Sequence:
 		set_PWM(play[count]);
 		break;
-		case Inc:
-		break;
 		default:
 		break;
 	}
 }
-
 
 int main(void)
 {
@@ -378,10 +379,10 @@ int main(void)
 	DDRA = 0x00; PORTA = 0xFF;
 	
 	TimerOn();
-	TimerSet(100);
+	TimerSet(150);
 	state = Start;
 	
-		/*
+	/*
 	encode ( 'a' );
 	playit();
 
@@ -391,7 +392,7 @@ int main(void)
 	encode ( 'c' );
 	playit();
 	*/
-	encode ( 'B' );
+	encode(user_string[i]);
 	
 	while (1)
 	{
