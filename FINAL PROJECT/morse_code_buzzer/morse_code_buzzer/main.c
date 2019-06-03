@@ -1,8 +1,16 @@
 #include <avr/io.h>
+#include <util/delay.h>
 #include <stdio.h>
 #include <string.h>
 #include <avr/interrupt.h>
+#include "nokia5110.h"
+#include "nokia5110.c"
 
+#define F_CPU 8250000UL
+#define b1 (~PINA & 0x01) //0001
+#define b2 (~PINA & 0x02) //0010
+#define b3 (~PINA & 0x04) //0100
+#define b4 (~PINA & 0x8) //1000
 #define DOT  273, 0,
 #define DASH 273, 273, 273, 0,
 #define END   -1
@@ -319,6 +327,14 @@ void encode(char val)
 			array_size = 9;
 			return;
 		}
+		case ')':
+			{
+				short tBuf[] = { END };
+				memcpy(play, tBuf, sizeof(tBuf));
+				array_size = 1;
+				return;
+			}
+		
 	}
 }
 
@@ -334,30 +350,84 @@ void playit()
 	
 }
 
-enum States{Start, Encode, Off, Sequence}state;
+enum States{Start, Menu, Option1, Option2, Option3, Encode, Off, Sequence}state;
 unsigned char button = 0x00;
 unsigned char count = 0;
 unsigned char i = 0;
+unsigned char var = 0;
 
 void tick(){
 	switch(state){
 		case Start:
 			count = 0;
+			i = 0;
 			PWM_on();
-			state = Encode;
+			set_PWM(0);
+			state = Menu;
 			break;
+		case Menu:
+		PORTD = 0x07;
+			if(b1){
+				state = Option1;
+			}
+			else if(b2){
+				state =  Option2;
+			}
+			else if(b3){
+				state = Option3;
+			}
+			break;
+		case Option1:
+		PORTD = 0x01;
+		var = 1;
+			if(b4){
+				state = Start;
+			}
+				user_string[0] = 's';
+				user_string[1] ='o';
+				user_string[2] = 's';
+				state = Encode;
+			break;
+		case Option2:
+		PORTD = 0x2;
+		var = 2;
+			if(b4){
+				state = Start;
+			}
+				user_string[0] = 'h';
+				user_string[1] = 'i';
+				user_string[2] = ')';
+				state = Encode;
+			break;
+		case Option3:
+		PORTD = 0x4;
+		var = 3;
+		if(b4){
+			state = Start;
+		}
+			user_string[0] = 'a';
+			user_string[1] = 'b';
+			user_string[2] = 'c';
+			state = Encode;
+		break;
 		case Encode:
-		PORTD = array_size;
+		PORTD = 0xAA;
+		if(b4){
+			i = 0;
+			state = Start;
+		}
 		if(i < sizeof(user_string)){
 			encode(user_string[i]);
 			i++;
 			state = Sequence;
 		}
 		else{
-			state = Off;
+			//set_PWM(0);
+			state = Start;
 		}
 			break;
 		case Sequence:
+		PORTD = 0xFF;
 			set_PWM(play[count]);
 			if((count < array_size) && (play[count] != END)){
 				count ++;
@@ -369,7 +439,11 @@ void tick(){
 			}
 			break;
 		case Off:
+			PORTD = 0xF0;
 			set_PWM(0);
+			if(b4){
+				state = Menu;
+			}
 			break;
 	}
 		
@@ -384,7 +458,7 @@ int main(void)
 	DDRA = 0x00; PORTA = 0xFF;
 	
 	TimerOn();
-	TimerSet(150);
+	TimerSet(200);
 	state = Start;
 	
 	//encode('z');
