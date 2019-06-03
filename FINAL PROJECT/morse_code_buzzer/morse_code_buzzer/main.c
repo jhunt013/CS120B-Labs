@@ -12,7 +12,7 @@ short play[PLAY_SIZE];
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
-char user_string[3] = {'b', 'b', 'a'};
+char user_string[3] = {'e', 'e', 'b'};
 unsigned char array_size = 0x00;
 
 void TimerOn() {
@@ -140,6 +140,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 6;
 			return;
 		}
 		case 'e':
@@ -147,6 +148,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 2;
 			return;
 		}
 		case 'f':
@@ -154,6 +156,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DOT DASH DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 7;
 			return;
 		}
 		case 'g':
@@ -161,6 +164,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DASH DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 8;
 			return;
 		}
 		case 'h':
@@ -168,6 +172,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DOT DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 5;
 			return;
 		}
 		case 'i':
@@ -175,6 +180,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 3;
 			return;
 		}
 		case 'j':
@@ -182,6 +188,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DASH DASH DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 11;
 			return;
 		}
 		case 'k':
@@ -189,6 +196,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DOT DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 8;
 			return;
 		}
 		case 'l':
@@ -196,6 +204,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DASH DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 7;
 			return;
 		}
 		case 'm':
@@ -203,6 +212,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 7;
 			return;
 		}
 		case 'n':
@@ -210,6 +220,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 5;
 			return;
 		}
 		case 'o':
@@ -217,6 +228,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DASH DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 10;
 			return;
 		}
 		case 'p':
@@ -224,6 +236,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DASH DASH DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 9;
 			return;
 		}
 		case 'q':
@@ -231,6 +244,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DASH DOT DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 11;
 			return;
 		}
 		case 'r':
@@ -238,6 +252,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DASH DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 6;
 			return;
 		}
 		case 's':
@@ -245,6 +260,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 4;
 			return;
 		}
 		case 't':
@@ -252,6 +268,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 2;
 			return;
 		}
 		case 'u':
@@ -259,6 +276,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DOT DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 6;
 			return;
 		}
 		case 'v':
@@ -266,6 +284,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DOT DOT DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 7;
 			return;
 		}
 		case 'w':
@@ -273,6 +292,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DASH DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 8;
 			return;
 		}
 		case 'x':
@@ -280,6 +300,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DOT DOT DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 9;
 			return;
 		}
 		case 'y':
@@ -287,6 +308,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DOT DASH DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 11;
 			return;
 		}
 		case 'z':
@@ -294,6 +316,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DASH DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 9;
 			return;
 		}
 	}
@@ -336,7 +359,7 @@ void tick(){
 			break;
 		case Sequence:
 			set_PWM(play[count]);
-			if(count < array_size){
+			if((count < array_size) && (play[count] != END)){
 				count ++;
 				state = Sequence;
 			}
