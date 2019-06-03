@@ -20,9 +20,52 @@ short play[PLAY_SIZE];
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
-char user_string[3] = {'e', 'e', 'b'};
+char out_string[3] = {'e', 'e', 'b'};
 unsigned char array_size = 0x00;
 
+char user_string[128] = {0};
+
+void USART_Init( unsigned int baud )
+{
+	/* Set baud rate */
+	UBRR0H = (unsigned char)(baud>>8);
+	UBRR0L = (unsigned char)baud;
+	/* Enable receiver and transmitter */
+	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+	/* Set frame format: 8data, 1stop bit */
+	UCSR0C = (3<<UCSZ00);
+}
+
+void USART_Transmit( unsigned char data )
+{
+	/* Wait for empty transmit buffer */
+	while ( !( UCSR0A & (1<<UDRE0)) )
+	;
+	/* Put data into buffer, sends the data */
+	UDR0 = data;
+}
+unsigned char USART_Receive( void )
+{
+	/* Wait for data to be received */
+	while ( !(UCSR0A & (1<<RXC0)) )
+	;
+	/* Get and return received data from buffer */
+	return UDR0;
+}
+
+
+void usart_get_string(){
+	int index = 0;
+	char tmpBuf[128] = {0};
+	
+	tmpBuf[index] = USART_Receive();
+	while (tmpBuf[index] != '\r' && (index < (sizeof(tmpBuf)-1) ) ) {
+		USART_Transmit(tmpBuf[index]);
+		index++;
+		tmpBuf[index] = USART_Receive();
+	}
+	memcpy(user_string, tmpBuf, strlen(tmpBuf));
+}
 void TimerOn() {
 	// AVR timer/counter controller register TCCR1
 	TCCR1B = 0x0B;// bit3 = 0: CTC mode (clear timer on compare)
@@ -354,7 +397,6 @@ enum States{Start, Menu, Option1, Option2, Option3, Encode, Off, Sequence}state;
 unsigned char button = 0x00;
 unsigned char count = 0;
 unsigned char i = 0;
-unsigned char var = 0;
 
 void tick(){
 	switch(state){
@@ -366,7 +408,7 @@ void tick(){
 			state = Menu;
 			break;
 		case Menu:
-		PORTD = 0x07;
+		//PORTD = 0x07;
 			if(b1){
 				state = Option1;
 			}
@@ -378,46 +420,44 @@ void tick(){
 			}
 			break;
 		case Option1:
-		PORTD = 0x01;
-		var = 1;
+		//PORTD = 0x01;
 			if(b4){
 				state = Start;
 			}
-				user_string[0] = 's';
-				user_string[1] ='o';
-				user_string[2] = 's';
+				out_string[0] = 's';
+				out_string[1] ='o';
+				out_string[2] = 's';
 				state = Encode;
 			break;
 		case Option2:
-		PORTD = 0x2;
-		var = 2;
+		//PORTD = 0x2;
 			if(b4){
 				state = Start;
 			}
-				user_string[0] = 'h';
-				user_string[1] = 'i';
-				user_string[2] = ')';
+				out_string[0] = 'h';
+				out_string[1] = 'i';
+				out_string[2] = ')';
 				state = Encode;
 			break;
 		case Option3:
-		PORTD = 0x4;
-		var = 3;
+		//PORTD = 0x4;
 		if(b4){
 			state = Start;
 		}
-			user_string[0] = 'a';
-			user_string[1] = 'b';
-			user_string[2] = 'c';
+		usart_get_string();
+		out_string[0] = user_string[0];
+		out_string[1] = user_string[1];
+		out_string[2] = user_string[2];
 			state = Encode;
 		break;
 		case Encode:
-		PORTD = 0xAA;
+		//PORTD = 0xAA;
 		if(b4){
 			i = 0;
 			state = Start;
 		}
-		if(i < sizeof(user_string)){
-			encode(user_string[i]);
+		if(i < sizeof(out_string)){
+			encode(out_string[i]);
 			i++;
 			state = Sequence;
 		}
@@ -427,7 +467,7 @@ void tick(){
 		}
 			break;
 		case Sequence:
-		PORTD = 0xFF;
+		//PORTD = 0xFF;
 			set_PWM(play[count]);
 			if((count < array_size) && (play[count] != END)){
 				count ++;
@@ -439,14 +479,43 @@ void tick(){
 			}
 			break;
 		case Off:
-			PORTD = 0xF0;
+		//PORTD = 0xF0;
 			set_PWM(0);
 			if(b4){
 				state = Menu;
 			}
 			break;
 	}
-		
+	switch(state){
+		case Menu:
+			nokia_lcd_clear();
+			nokia_lcd_set_cursor(3,3);
+			nokia_lcd_write_string("1.SOS", 1);
+			nokia_lcd_set_cursor(3,17);
+			nokia_lcd_write_string("2.hi", 1);
+			nokia_lcd_set_cursor(3,35);
+			nokia_lcd_write_string("3.CUSTOM TEXT", 1);
+			nokia_lcd_render();
+			break;
+		case Option1:
+			nokia_lcd_clear();
+			nokia_lcd_set_cursor(3,3);
+			nokia_lcd_write_string("S O S", 1);
+			nokia_lcd_render();
+			break;
+		case Option2:
+			nokia_lcd_clear();
+			nokia_lcd_set_cursor(3,3);
+			nokia_lcd_write_string("h i", 1);
+			nokia_lcd_render();
+			break;
+		case Option3:
+			nokia_lcd_clear();
+			nokia_lcd_set_cursor(3,3);
+			nokia_lcd_write_string("insert text", 1);
+			nokia_lcd_render();
+			break;
+	}
 	
 }
 
@@ -454,9 +523,13 @@ void tick(){
 int main(void)
 {
 	DDRB = 0xFF; PORTB = 0x00;
-	DDRD = 0xFF; PORTD = 0x00;
+	//DDRD = 0xFF; PORTD = 0x00;
 	DDRA = 0x00; PORTA = 0xFF;
+	USART_Init(50);
 	
+	nokia_lcd_init();
+	nokia_lcd_clear();
+	nokia_lcd_power(1);
 	TimerOn();
 	TimerSet(200);
 	state = Start;

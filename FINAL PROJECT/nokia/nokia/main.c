@@ -69,8 +69,8 @@ void menu_tick(){
 	switch(state){
 		case menu:
 		PORTD = 0xFF;
-			nokia_lcd_set_cursor(3,3);
 			nokia_lcd_clear();
+			nokia_lcd_set_cursor(3,3);
 			nokia_lcd_write_string("1.SOS", 1);
 			nokia_lcd_set_cursor(3,17);
 			nokia_lcd_write_string("2.hi", 1);
@@ -81,22 +81,22 @@ void menu_tick(){
 			break;
 		case option1:
 		PORTD = 0x01;
-			nokia_lcd_set_cursor(3,3);
 			nokia_lcd_clear();
+			nokia_lcd_set_cursor(3,3);
 			nokia_lcd_write_string("S O S", 1);
 			nokia_lcd_render();
 			break;
 		case option2:
 		PORTD = 0x02;
-			nokia_lcd_set_cursor(3,3);
 			nokia_lcd_clear();
+			nokia_lcd_set_cursor(3,3);
 			nokia_lcd_write_string("h i", 1);
 			nokia_lcd_render();
 			break;
 		case option3:
 		PORTD = 0x04;
-			nokia_lcd_set_cursor(3,3);
 			nokia_lcd_clear();
+			nokia_lcd_set_cursor(3,3);
 			nokia_lcd_write_string("insert text", 1);
 			nokia_lcd_render();
 			break;
