@@ -12,6 +12,7 @@ short play[PLAY_SIZE];
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
+char user_string[3] = {'a', 'b', 'c'};
 
 void TimerOn() {
 	// AVR timer/counter controller register TCCR1
@@ -298,14 +299,6 @@ void encode(char val)
 void playit()
 {
 	int index = 0;
-	/*
-	while ( (play[index] != END) && (index < PLAY_SIZE))
-	{
-		printf("%3d) %3d\n", index, play[index]);
-		index++;
-	}*/
-	
-	
 	PWM_on();
 	while ( (play[index] != END) && (index < PLAY_SIZE))
 	{
@@ -315,9 +308,10 @@ void playit()
 	
 }
 
-enum States{Start, Off, Inc, Sequence}state;
+enum States{Start, Off, Sequence}state;
 unsigned char button = 0x00;
 unsigned char count = 0;
+unsigned int i = 0;
 
 void tick(){
 	button = ~PINA & 0x01;
@@ -335,14 +329,24 @@ void tick(){
 		}
 		break;
 		case Sequence:
-		if(count< sizeof(play)){
+		if(i < sizeof(user_string)){
+			encode(user_string[i]);
+			playit();
+			i++;
+			state = Sequence;
+		}
+		else{
+			state = Off;
+		}
+		/*if(count< sizeof(play)){
 			count++;
+			i++;
 			state = Sequence;
 		}
 		else if(count ==  sizeof(play)){
 			count = 0;
 			state = Off;
-		}
+		}*/
 		break;
 		default:
 		state = Start;
@@ -357,12 +361,15 @@ void tick(){
 		break;
 		
 		case Sequence:
-		set_PWM(play[count]);
+		//encode(user_string[i]);
+		//set_PWM(play[count]);
+		//playit();
 		break;
 		default:
 		break;
 	}
 }
+
 
 
 int main(void)
@@ -371,23 +378,17 @@ int main(void)
 	DDRA = 0x00; PORTA = 0xFF;
 	
 	TimerOn();
-	TimerSet(300);
+	TimerSet(150);
 	state = Start;
 	
-		/*
-	encode ( 'a' );
+	encode('z');
 	playit();
-	encode ( 'B' );
-	playit();
-	encode ( 'c' );
-	playit();
-	*/
-	encode ( 'B' );
 	
 	while (1)
 	{
-		tick();
-		while (!TimerFlag);
-		TimerFlag = 0;
+		
+		//tick();
+		//while (!TimerFlag);
+		//TimerFlag = 0;
 	}
 }
