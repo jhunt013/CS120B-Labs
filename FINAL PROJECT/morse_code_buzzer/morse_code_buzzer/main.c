@@ -21,7 +21,7 @@ short play[PLAY_SIZE];
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
-char out_string[3] = {'e', 'e', 'b'};
+char out_string[10];
 unsigned char array_size = 0x00;
 
 char user_string[128] = {0};
@@ -54,7 +54,8 @@ unsigned char USART_Receive( void )
 	return UDR0;
 }
 
-
+int index = 0;
+int j = 0;
 void usart_get_string(){
 	int index = 0;
 	char tmpBuf[128] = {0};
@@ -428,6 +429,16 @@ void tick(){
 				out_string[0] = 's';
 				out_string[1] ='o';
 				out_string[2] = 's';
+				
+				out_string[3] = ')';
+				out_string[4] = ')';
+				out_string[5] = ')';
+				out_string[6] = ')';
+				out_string[7] = ')';
+				out_string[8] = ')';
+				out_string[9] = ')';
+				
+				
 				state = Encode;
 			break;
 		case Option2:
@@ -437,7 +448,16 @@ void tick(){
 			}
 				out_string[0] = 'h';
 				out_string[1] = 'i';
+				
 				out_string[2] = ')';
+				out_string[3] = ')';
+				out_string[4] = ')';
+				out_string[5] = ')';
+				out_string[6] = ')';
+				out_string[7] = ')';
+				out_string[8] = ')';
+				out_string[9] = ')';
+				
 				state = Encode;
 			break;
 		case Option3:
@@ -446,9 +466,17 @@ void tick(){
 			state = Start;
 		}
 		usart_get_string();
+		while(j < index){
+			out_string[j] = user_string[j];
+			j++;
+		}
+		
 		out_string[0] = user_string[0];
 		out_string[1] = user_string[1];
 		out_string[2] = user_string[2];
+		//out_string[3] = user_string[2];
+		//out_string[2] = user_string[2];
+	
 			state = Encode;
 		break;
 		case Encode:
@@ -488,6 +516,14 @@ void tick(){
 			break;
 	}
 	switch(state){
+		case Start:
+		break;
+		case Encode:
+		break;
+		case Off:
+		break;
+		case Sequence:
+		break;
 		case Menu:
 			nokia_lcd_clear();
 			nokia_lcd_set_cursor(3,3);
@@ -511,20 +547,21 @@ void tick(){
 			nokia_lcd_render();
 			break;
 		case Option3:
+			
 			nokia_lcd_clear();
 			nokia_lcd_set_cursor(3,3);
 			nokia_lcd_write_string("insert text", 1);
 			nokia_lcd_set_cursor(3,17);
 			nokia_lcd_write_string("previous msg: ", 1);
 			nokia_lcd_set_cursor(3,30);
-			nokia_lcd_write_string(user_string, 1);
+			nokia_lcd_write_string(eeprom_read_byte ((const uint8_t*)64),1);
 			nokia_lcd_render();
-			eeprom_update_byte((uint8_t *)64, user_string);
+			eeprom_update_byte (( uint8_t *) 64, *user_string);
+			//eeprom_write_byte(( uint8_t *) 64, user_string);
 			break;
 	}
 	
 }
-
 
 int main(void)
 {
