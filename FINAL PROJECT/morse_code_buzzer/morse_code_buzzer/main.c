@@ -12,7 +12,8 @@ short play[PLAY_SIZE];
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
-char user_string[3] = {'a', 'b', 'c'};
+char user_string[3] = {'b', 'b', 'a'};
+unsigned char array_size = 0x00;
 
 void TimerOn() {
 	// AVR timer/counter controller register TCCR1
@@ -115,6 +116,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 5;
 			return;
 		}
 		case 'b':
@@ -122,6 +124,7 @@ void encode(char val)
 		{ 
 			short tBuf[] = { DASH DOT DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 7;
 			return;
 		}
 		case 'c':
@@ -129,6 +132,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DOT DASH DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
+			array_size = 9;
 			return;
 		}
 		case 'd':
@@ -307,75 +311,60 @@ void playit()
 	
 }
 
-enum States{Start, Off, Inc, Sequence}state;
+enum States{Start, Encode, Off, Sequence}state;
 unsigned char button = 0x00;
 unsigned char count = 0;
-unsigned int i = 0;
+unsigned char i = 0;
 
 void tick(){
-	button = ~PINA & 0x01;
 	switch(state){
 		case Start:
-		state = Off;
-		break;
-		case Off:
-		if(button == 0x01){
+			count = 0;
 			PWM_on();
+			state = Encode;
+			break;
+		case Encode:
+		PORTD = array_size;
+		if(i < sizeof(user_string)){
+			encode(user_string[i]);
+			i++;
 			state = Sequence;
 		}
 		else{
 			state = Off;
 		}
-		break;
+			break;
 		case Sequence:
-		if(count< sizeof(play)){
-			state = Inc;
-		}
-		else if(count ==  sizeof(play)){
-			i = 0;
-			count = 0;
-			state = Off;
-		}
-		break;
-		case Inc:
-		i++;
-		count++;
-		state = Sequence;
-		break;
-		default:
-		state = Start;
-		break;
-	}
-	switch(state){
-		case Start:
-		break;
-		
+			set_PWM(play[count]);
+			if(count < array_size){
+				count ++;
+				state = Sequence;
+			}
+			else {
+				count = 0;
+				state = Encode;
+			}
+			break;
 		case Off:
-		PWM_off();
-		break;
-		
-		case Sequence:
-		//encode(user_string[i]);
-		set_PWM(play[count]);
-		break;
-		case Inc:
-		break;
-		default:
-		break;
+			set_PWM(0);
+			break;
 	}
+		
+	
 }
 
 
 int main(void)
 {
 	DDRB = 0xFF; PORTB = 0x00;
+	DDRD = 0xFF; PORTD = 0x00;
 	DDRA = 0x00; PORTA = 0xFF;
 	
 	TimerOn();
 	TimerSet(150);
 	state = Start;
 	
-	encode('z');
+	//encode('z');
 	//playit();
 	
 	while (1)
