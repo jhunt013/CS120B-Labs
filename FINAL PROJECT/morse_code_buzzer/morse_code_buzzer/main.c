@@ -2,6 +2,7 @@
 #include <util/delay.h>
 #include <stdio.h>
 #include <string.h>
+#include <avr/eeprom.h>
 #include <avr/interrupt.h>
 #include "nokia5110.h"
 #include "nokia5110.c"
@@ -513,7 +514,12 @@ void tick(){
 			nokia_lcd_clear();
 			nokia_lcd_set_cursor(3,3);
 			nokia_lcd_write_string("insert text", 1);
+			nokia_lcd_set_cursor(3,17);
+			nokia_lcd_write_string("previous msg: ", 1);
+			nokia_lcd_set_cursor(3,30);
+			nokia_lcd_write_string(user_string, 1);
 			nokia_lcd_render();
+			eeprom_update_byte((uint8_t *)64, user_string);
 			break;
 	}
 	
