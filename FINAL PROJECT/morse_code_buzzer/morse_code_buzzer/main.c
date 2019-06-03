@@ -105,7 +105,6 @@ void PWM_off() {
 	TCCR3B = 0x00;
 }
 
-
 void encode(char val)
 {
 	//printf("Encode letter %c\n", val);
@@ -308,7 +307,7 @@ void playit()
 	
 }
 
-enum States{Start, Off, Sequence}state;
+enum States{Start, Off, Inc, Sequence}state;
 unsigned char button = 0x00;
 unsigned char count = 0;
 unsigned int i = 0;
@@ -329,24 +328,19 @@ void tick(){
 		}
 		break;
 		case Sequence:
-		if(i < sizeof(user_string)){
-			encode(user_string[i]);
-			playit();
-			i++;
-			state = Sequence;
-		}
-		else{
-			state = Off;
-		}
-		/*if(count< sizeof(play)){
-			count++;
-			i++;
-			state = Sequence;
+		if(count< sizeof(play)){
+			state = Inc;
 		}
 		else if(count ==  sizeof(play)){
+			i = 0;
 			count = 0;
 			state = Off;
-		}*/
+		}
+		break;
+		case Inc:
+		i++;
+		count++;
+		state = Sequence;
 		break;
 		default:
 		state = Start;
@@ -362,14 +356,14 @@ void tick(){
 		
 		case Sequence:
 		//encode(user_string[i]);
-		//set_PWM(play[count]);
-		//playit();
+		set_PWM(play[count]);
+		break;
+		case Inc:
 		break;
 		default:
 		break;
 	}
 }
-
 
 
 int main(void)
@@ -382,13 +376,13 @@ int main(void)
 	state = Start;
 	
 	encode('z');
-	playit();
+	//playit();
 	
 	while (1)
 	{
 		
-		//tick();
-		//while (!TimerFlag);
-		//TimerFlag = 0;
+		tick();
+		while (!TimerFlag);
+		TimerFlag = 0;
 	}
 }
