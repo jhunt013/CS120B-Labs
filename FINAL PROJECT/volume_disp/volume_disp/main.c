@@ -29,6 +29,7 @@
 #define B4 493.88
 #define C5 523.25
 
+short sound = 0;
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
@@ -225,7 +226,7 @@ void Tick_disp(){
 	
 	switch(state){
 		case Start:
-		PWM_on(); //DELETE
+	//	PWM_on(); //DELETE
 		state = Adjust;
 		break;
 		case Adjust:
@@ -244,7 +245,8 @@ void Tick_disp(){
 				LCD_Char(i);		/* char at 'i'th position will display on lcd */
 				LCD_Char(' ');		/* space between each custom char. */
 			}
-			set_PWM(C4);
+		//	set_PWM(C4);
+		sound = C4;
 		}
 		else if(val > 2 && val <=4){
 			LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
@@ -262,6 +264,7 @@ void Tick_disp(){
 				LCD_Char(' ');		/* space between each custom char. */
 			}
 			set_PWM(D4);
+			sound = D4;
 		}
 		else if(val > 4 && val <= 6){
 			LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
@@ -279,6 +282,7 @@ void Tick_disp(){
 				LCD_Char(' ');		/* space between each custom char. */
 			}
 			set_PWM(E4);
+			sound = E4;
 		}
 		else if(val > 6 && val <=8){
 			LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
@@ -296,6 +300,7 @@ void Tick_disp(){
 				LCD_Char(' ');		/* space between each custom char. */
 			}
 			set_PWM(F4);
+			sound = F4;
 		}
 		else if(val >8 && val <= 10){
 			LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
@@ -312,7 +317,8 @@ void Tick_disp(){
 				LCD_Char(i);		/* char at 'i'th position will display on lcd */
 				LCD_Char(' ');		/* space between each custom char. */
 			}
-			set_PWM(G4);
+			//set_PWM(G4);
+			sound = G4;
 		}
 		else if(val > 10 && val < 12){
 			LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
@@ -329,7 +335,8 @@ void Tick_disp(){
 				LCD_Char(i);		/* char at 'i'th position will display on lcd */
 				LCD_Char(' ');		/* space between each custom char. */
 			}
-			set_PWM(A4);
+			//set_PWM(A4);
+			sound = A4;
 		}
 		else if(val > 12 && val <= 14){
 			LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
@@ -346,7 +353,8 @@ void Tick_disp(){
 				LCD_Char(i);		/* char at 'i'th position will display on lcd */
 				LCD_Char(' ');		/* space between each custom char. */
 			}
-			set_PWM(B4);
+			//set_PWM(B4);
+			sound = B4;
 		}
 		else if(val > 14 && val <= 16) {
 			LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
@@ -363,7 +371,8 @@ void Tick_disp(){
 				LCD_Char(i);		/* char at 'i'th position will display on lcd */
 				LCD_Char(' ');		/* space between each custom char. */
 			}
-			set_PWM(C5);
+			//set_PWM(C5);
+			sound = C5;
 		}
 		break;
 	}
