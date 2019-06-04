@@ -42,10 +42,21 @@ unsigned char USART_Receive( void )
 	return UDR0;
 }
 
+void printStr(char *str, int maxOut)
+{
+	int idx=0;
+	while ( (str[idx] != 0) && (idx < maxOut) )
+	{
+		USART_Transmit(str[idx]);
+		idx++;
+	}
+}
+
 int main(void)
 {
 	USART_Init(50);
-	
+	USART_Transmit('a');
+
 	/*
 	char R_array[15],W_array[15] = "EEPROM TEST";
 	memset(R_array,0,15);
@@ -65,17 +76,24 @@ int main(void)
 	64 address */
 	
 	sprintf(array,"something %2x:%c\r\n", (int)value, value);
-	while(array[index] != 0){
-		USART_Transmit(array[index]);
-		index++;
-	}
+	printStr(array,sizeof(array));
+	
 	
 	_delay_ms(1);
 	if(value > 'z'){
 		value = '!';
 	}
+	else if(value < '!'){
+		value = '!';
+	}
+	printStr("after val check\n\r",17);
+	
 	ByteOfData = value + 1;
 	eeprom_update_byte (( uint8_t *) 64, ByteOfData );
+	printStr("after upd check\n\r", 17);
+	
+	sprintf(array,"anything %2x:%c\r\n", (int)value, value);
+	printStr(array,sizeof(array));
 	
 	while(1)
 	{
