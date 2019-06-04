@@ -1,3 +1,4 @@
+#define F_CPU 8250000UL
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdio.h>
@@ -7,7 +8,6 @@
 #include "nokia5110.h"
 #include "nokia5110.c"
 
-#define F_CPU 8250000UL
 #define b1 (~PINA & 0x01) //0001
 #define b2 (~PINA & 0x02) //0010
 #define b3 (~PINA & 0x04) //0100
@@ -163,6 +163,16 @@ void PWM_off() {
 	TCCR3B = 0x00;
 }
 
+
+void printStr(char *str, int maxOut)
+{
+	int idx=0;
+	while ( (str[idx] != 0) && (idx < maxOut) )
+	{
+		USART_Transmit(str[idx]);
+		idx++;
+	}
+}
 void encode(char val)
 {
 	//printf("Encode letter %c\n", val);
@@ -173,7 +183,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 5;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'b':
@@ -181,7 +191,7 @@ void encode(char val)
 		{ 
 			short tBuf[] = { DASH DOT DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 7;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'c':
@@ -189,7 +199,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DOT DASH DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 9;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'd':
@@ -197,7 +207,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 6;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'e':
@@ -205,7 +215,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 2;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'f':
@@ -213,7 +223,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DOT DASH DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 7;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'g':
@@ -221,7 +231,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DASH DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 8;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'h':
@@ -229,7 +239,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DOT DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 5;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'i':
@@ -237,7 +247,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 3;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'j':
@@ -245,7 +255,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DASH DASH DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 11;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'k':
@@ -253,7 +263,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DOT DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 8;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'l':
@@ -261,7 +271,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DASH DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 7;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'm':
@@ -269,7 +279,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 7;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'n':
@@ -277,7 +287,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 5;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'o':
@@ -285,7 +295,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DASH DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 10;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'p':
@@ -293,7 +303,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DASH DASH DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 9;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'q':
@@ -301,7 +311,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DASH DOT DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 11;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'r':
@@ -309,7 +319,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DASH DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 6;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 's':
@@ -317,7 +327,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 4;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 't':
@@ -325,7 +335,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 2;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'u':
@@ -333,7 +343,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DOT DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 6;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'v':
@@ -341,7 +351,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DOT DOT DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 7;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'w':
@@ -349,7 +359,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DOT DASH DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 8;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'x':
@@ -357,7 +367,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DOT DOT DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 9;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'y':
@@ -365,7 +375,7 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DOT DASH DASH END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 11;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case 'z':
@@ -373,14 +383,14 @@ void encode(char val)
 		{
 			short tBuf[] = { DASH DASH DOT DOT END };
 			memcpy(play, tBuf, sizeof(tBuf));
-			array_size = 9;
+			array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 			return;
 		}
 		case ')':
 			{
 				short tBuf[] = { END };
 				memcpy(play, tBuf, sizeof(tBuf));
-				array_size = 1;
+				array_size = sizeof(tBuf)/sizeof(tBuf[0]); 
 				return;
 			}
 		
@@ -538,6 +548,7 @@ void tick(){
 			nokia_lcd_write_string("previous msg: ", 1);
 			nokia_lcd_set_cursor(3,30);
 			
+			memset(eeprom_string,0, sizeof(eeprom_string));
 			eeprom_read_block(eeprom_string, (const uint8_t *)64, MAX_STRING);
 			int numBytes = strlen(eeprom_string);
 			if ( numBytes >= MAX_STRING )
@@ -546,36 +557,25 @@ void tick(){
 				eeprom_string[MAX_STRING-1] = 0; // Null terminate the truncated string
 			}
 			
-			int j = 0;
-			USART_Transmit('|');
-			while(eeprom_string[j] != 0){
-				USART_Transmit(eeprom_string[j]);
-				j++;
-			}
-			USART_Transmit('|');
+			printStr("\n\reeprom ",9);
+			printStr(eeprom_string, sizeof(eeprom_string));
 			
-			
-			// Write the new string to EEPROM
-			numBytes = strlen(user_string);
-			nokia_lcd_write_string(user_string, 1);
+			// Write the old string to nokia lcd
+			nokia_lcd_write_string(eeprom_string, 1);
 			nokia_lcd_render();
+			
+			//write current string to eeprom
+			numBytes = strlen(user_string);
 			if ( numBytes >= MAX_STRING )
 			{
 				numBytes = MAX_STRING;
 				user_string[MAX_STRING-1] = 0; // Null terminate the truncated string
 			}
-			eeprom_update_block((uint8_t *) 64, user_string, MAX_STRING);
-			
-			j = 0;
-			USART_Transmit('|');
-			while(user_string[j] != 0){
-				USART_Transmit(user_string[j]);
-				j++;
-			}
-			USART_Transmit('|');
-			
-			nokia_lcd_write_string(eeprom_read_byte ((const uint8_t*)64),1);
-			
+			eeprom_update_block(user_string, (uint8_t *) 64, MAX_STRING);
+			printStr("\n\ruser ", 7);
+			printStr(user_string, sizeof(user_string));
+						
+				
 			break;
 		}
 	}
