@@ -163,19 +163,8 @@ void PWM_off() {
 	TCCR3B = 0x00;
 }
 
-
-void printStr(char *str, int maxOut)
-{
-	int idx=0;
-	while ( (str[idx] != 0) && (idx < maxOut) )
-	{
-		USART_Transmit(str[idx]);
-		idx++;
-	}
-}
 void encode(char val)
 {
-	//printf("Encode letter %c\n", val);
 	switch(val)
 	{
 		case 'a':
@@ -424,7 +413,6 @@ void tick(){
 			state = Menu;
 			break;
 		case Menu:
-		//PORTD = 0x07;
 			if(b1){
 				state = Option1;
 			}
@@ -436,7 +424,6 @@ void tick(){
 			}
 			break;
 		case Option1:
-		//PORTD = 0x01;
 			if(b4){
 				state = Start;
 			}
@@ -448,7 +435,6 @@ void tick(){
 				state = Encode;
 			break;
 		case Option2:
-		//PORTD = 0x2;
 			if(b4){
 				state = Start;
 			}
@@ -459,7 +445,6 @@ void tick(){
 				state = Encode;
 			break;
 		case Option3:
-		//PORTD = 0x4;
 		if(b4){
 			state = Start;
 		}
@@ -467,13 +452,10 @@ void tick(){
 		out_string[0] = user_string[0];
 		out_string[1] = user_string[1];
 		out_string[2] = user_string[2];
-		//out_string[3] = user_string[2];
-		//out_string[2] = user_string[2];
 	
 			state = Encode;
 		break;
 		case Encode:
-		//PORTD = 0xAA;
 		if(b4){
 			i = 0;
 			state = Start;
@@ -484,12 +466,10 @@ void tick(){
 			state = Sequence;
 		}
 		else{
-			//set_PWM(0);
 			state = Start;
 		}
 			break;
 		case Sequence:
-		//PORTD = 0xFF;
 			set_PWM(play[count]);
 			if((count < array_size) && (play[count] != END)){
 				count ++;
@@ -501,7 +481,6 @@ void tick(){
 			}
 			break;
 		case Off:
-		//PORTD = 0xF0;
 			set_PWM(0);
 			if(b4){
 				state = Menu;
@@ -557,9 +536,6 @@ void tick(){
 				eeprom_string[MAX_STRING-1] = 0; // Null terminate the truncated string
 			}
 			
-			printStr("\n\reeprom ",9);
-			printStr(eeprom_string, sizeof(eeprom_string));
-			
 			// Write the old string to nokia lcd
 			nokia_lcd_write_string(eeprom_string, 1);
 			nokia_lcd_render();
@@ -569,11 +545,9 @@ void tick(){
 			if ( numBytes >= MAX_STRING )
 			{
 				numBytes = MAX_STRING;
-				user_string[MAX_STRING-1] = 0; // Null terminate the truncated string
 			}
+			user_string[numBytes - 1] = 0; // Null terminate the truncated string
 			eeprom_update_block(user_string, (uint8_t *) 64, MAX_STRING);
-			printStr("\n\ruser ", 7);
-			printStr(user_string, sizeof(user_string));
 						
 				
 			break;
