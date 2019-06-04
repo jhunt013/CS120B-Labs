@@ -24,10 +24,11 @@ char eeprom_string[MAX_STRING];
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
-char out_string[3];
+
+char out_string[MAX_STRING];
 unsigned char array_size = 0x00;
 
-char user_string[128] = {0};
+char user_string[MAX_STRING] = {0};
 
 void USART_Init( unsigned int baud )
 {
@@ -57,10 +58,9 @@ unsigned char USART_Receive( void )
 	return UDR0;
 }
 
-//int index = 0;
 int j = 0;
 
-void usart_get_string(){
+int usart_get_string(){
 	int index = 0;
 	char tmpBuf[128] = {0};
 	
@@ -71,6 +71,7 @@ void usart_get_string(){
 		tmpBuf[index] = USART_Receive();
 	}
 	memcpy(user_string, tmpBuf, strlen(tmpBuf));
+	return index;
 }
 void TimerOn() {
 	// AVR timer/counter controller register TCCR1
@@ -404,6 +405,7 @@ unsigned char count = 0;
 unsigned char i = 0;
 
 void tick(){
+	static int nb = 0;
 	switch(state){
 		case Start:
 			count = 0;
@@ -430,8 +432,7 @@ void tick(){
 				out_string[0] = 's';
 				out_string[1] ='o';
 				out_string[2] = 's';
-		
-				
+			nb = 3;
 				state = Encode;
 			break;
 		case Option2:
@@ -440,7 +441,7 @@ void tick(){
 			}
 				out_string[0] = 'h';
 				out_string[1] = 'i';
-				out_string[2] = ')';
+				nb = 2;
 				
 				state = Encode;
 			break;
@@ -448,11 +449,13 @@ void tick(){
 		if(b4){
 			state = Start;
 		}
-		usart_get_string();
+		nb = usart_get_string();
+		/*
 		out_string[0] = user_string[0];
 		out_string[1] = user_string[1];
 		out_string[2] = user_string[2];
-	
+		*/
+		memcpy(out_string, user_string, nb);
 			state = Encode;
 		break;
 		case Encode:
@@ -460,7 +463,7 @@ void tick(){
 			i = 0;
 			state = Start;
 		}
-		if(i < sizeof(out_string)){
+		if(i < nb){
 			encode(out_string[i]);
 			i++;
 			state = Sequence;
