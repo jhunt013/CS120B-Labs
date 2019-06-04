@@ -16,7 +16,7 @@
 #define b2 (~PINA & 0x04) //PA2 0100
 #define b3 (~PINA & 0x02) //PA2 0010
 #define b4 (~PINA & 0x8) //1000
-double sound = 0.0;
+double sound = 261.63;
 //#define DOT  273, 0,
 //#define DASH 273, 273, 273, 0,
 #define DOT sound, 0,
@@ -650,8 +650,6 @@ int SMTick2(int state){
 		char i;
 		unsigned short temp = ADC;
 		short val = (17 * temp) / range;
-		unsigned char Character4[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };	//speaker
-		unsigned char Character5[8] = { 0x01, 0x03, 0x05, 0x09, 0x09, 0x0B, 0x1B, 0x18 };	//music note
 		
 		switch(state){
 			case SM2_Start:
@@ -659,141 +657,43 @@ int SMTick2(int state){
 			break;
 			case Adjust:
 			if(val > 0 && val <= 2){
-				LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
-				LCD_Custom_Char(1, Character4);  /* Build Character2 at position 1 */
-				LCD_Custom_Char(2, Character4);  /* Build Character3 at position 2 */
-				LCD_Custom_Char(3, Character4);  /* Build Character6 at position 3 */
-				LCD_Custom_Char(4, Character4);  /* Build Character6 at position 4 */
-				LCD_Custom_Char(5, Character4);  /* Build Character6 at position 5 */
-				LCD_Custom_Char(6, Character4);  /* Build Character6 at position 6 */
-				LCD_Custom_Char(7, Character4);  /* Build Character6 at position 7 */
-				LCD_Command(0xc0);
-				for(i=0;i<1;i++)		/* function will send data 1 to 8 to lcd */
-				{
-					LCD_Char(i);		/* char at 'i'th position will display on lcd */
-					LCD_Char(' ');		/* space between each custom char. */
-				}
 				sound = C4;
 			}
 			else if(val > 2 && val <=4){
-				LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
-				LCD_Custom_Char(1, Character5);  /* Build Character2 at position 1 */
-				LCD_Custom_Char(2, Character4);  /* Build Character3 at position 2 */
-				LCD_Custom_Char(3, Character4);  /* Build Character6 at position 3 */
-				LCD_Custom_Char(4, Character4);  /* Build Character6 at position 4 */
-				LCD_Custom_Char(5, Character4);  /* Build Character6 at position 5 */
-				LCD_Custom_Char(6, Character4);  /* Build Character6 at position 6 */
-				LCD_Custom_Char(7, Character4);  /* Build Character6 at position 7 */
-				LCD_Command(0xc0);
-				for(i=0;i<2;i++)		/* function will send data 1 to 8 to lcd */
-				{
-					LCD_Char(i);		/* char at 'i'th position will display on lcd */
-					LCD_Char(' ');		/* space between each custom char. */
-				}
 				sound = D4;
 			}
 			else if(val > 4 && val <= 6){
-				LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
-				LCD_Custom_Char(1, Character5);  /* Build Character2 at position 1 */
-				LCD_Custom_Char(2, Character5);  /* Build Character3 at position 2 */
-				LCD_Custom_Char(3, Character4);  /* Build Character6 at position 3 */
-				LCD_Custom_Char(4, Character4);  /* Build Character6 at position 4 */
-				LCD_Custom_Char(5, Character4);  /* Build Character6 at position 5 */
-				LCD_Custom_Char(6, Character4);  /* Build Character6 at position 6 */
-				LCD_Custom_Char(7, Character4);  /* Build Character6 at position 7 */
-				LCD_Command(0xc0);
-				for(i=0;i<3;i++)		/* function will send data 1 to 8 to lcd */
-				{
-					LCD_Char(i);		/* char at 'i'th position will display on lcd */
-					LCD_Char(' ');		/* space between each custom char. */
-				}
 				sound = E4;
 			}
 			else if(val > 6 && val <=8){
-				LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
-				LCD_Custom_Char(1, Character5);  /* Build Character2 at position 1 */
-				LCD_Custom_Char(2, Character5);  /* Build Character3 at position 2 */
-				LCD_Custom_Char(3, Character5);  /* Build Character4 at position 3 */
-				LCD_Custom_Char(4, Character4);  /* Build Character6 at position 5 */
-				LCD_Custom_Char(5, Character4);  /* Build Character6 at position 5 */
-				LCD_Custom_Char(6, Character4);  /* Build Character6 at position 6 */
-				LCD_Custom_Char(7, Character4);  /* Build Character6 at position 7 */
-				LCD_Command(0xc0);
-				for(i=0;i<4;i++)		/* function will send data 1 to 8 to lcd */
-				{
-					LCD_Char(i);		/* char at 'i'th position will display on lcd */
-					LCD_Char(' ');		/* space between each custom char. */
-				}
 				sound = F4;
 			}
 			else if(val >8 && val <= 10){
-				LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
-				LCD_Custom_Char(1, Character5);  /* Build Character2 at position 1 */
-				LCD_Custom_Char(2, Character5);  /* Build Character3 at position 2 */
-				LCD_Custom_Char(3, Character5);  /* Build Character4 at position 3 */
-				LCD_Custom_Char(4, Character5);  /* Build Character5 at position 4 */
-				LCD_Custom_Char(5, Character4);  /* Build Character6 at position 5 */
-				LCD_Custom_Char(6, Character4);  /* Build Character6 at position 6 */
-				LCD_Custom_Char(7, Character4);  /* Build Character6 at position 7 */
-				LCD_Command(0xc0);
-				for(i=0;i<5;i++)		/* function will send data 1 to 8 to lcd */
-				{
-					LCD_Char(i);		/* char at 'i'th position will display on lcd */
-					LCD_Char(' ');		/* space between each custom char. */
-				}
 				sound = G4;
 			}
 			else if(val > 10 && val < 12){
-				LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
-				LCD_Custom_Char(1, Character5);  /* Build Character2 at position 1 */
-				LCD_Custom_Char(2, Character5);  /* Build Character3 at position 2 */
-				LCD_Custom_Char(3, Character5);  /* Build Character4 at position 3 */
-				LCD_Custom_Char(4, Character5);  /* Build Character5 at position 4 */
-				LCD_Custom_Char(5, Character5);  /* Build Character6 at position 5 */
-				LCD_Custom_Char(6, Character4);  /* Build Character6 at position 6 */
-				LCD_Custom_Char(7, Character4);  /* Build Character6 at position 7 */
-				LCD_Command(0xc0);
-				for(i=0;i<6;i++)		/* function will send data 1 to 8 to lcd */
-				{
-					LCD_Char(i);		/* char at 'i'th position will display on lcd */
-					LCD_Char(' ');		/* space between each custom char. */
-				}
 				sound = A4;
 			}
 			else if(val > 12 && val <= 14){
-				LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
-				LCD_Custom_Char(1, Character5);  /* Build Character2 at position 1 */
-				LCD_Custom_Char(2, Character5);  /* Build Character3 at position 2 */
-				LCD_Custom_Char(3, Character5);  /* Build Character4 at position 3 */
-				LCD_Custom_Char(4, Character5);  /* Build Character5 at position 4 */
-				LCD_Custom_Char(5, Character5);  /* Build Character6 at position 5 */
-				LCD_Custom_Char(6, Character5);  /* Build Character6 at position 6 */
-				LCD_Custom_Char(7, Character4);  /* Build Character6 at position 7 */
-				LCD_Command(0xc0);
-				for(i=0;i<7;i++)		/* function will send data 1 to 8 to lcd */
-				{
-					LCD_Char(i);		/* char at 'i'th position will display on lcd */
-					LCD_Char(' ');		/* space between each custom char. */
-				}
 				sound = B4;
 			}
 			else if(val > 14 && val <= 16) {
-				LCD_Custom_Char(0, Character5);  /* Build Character1 at position 0 */
-				LCD_Custom_Char(1, Character5);  /* Build Character2 at position 1 */
-				LCD_Custom_Char(2, Character5);  /* Build Character3 at position 2 */
-				LCD_Custom_Char(3, Character5);  /* Build Character4 at position 3 */
-				LCD_Custom_Char(4, Character5);  /* Build Character5 at position 4 */
-				LCD_Custom_Char(5, Character5);  /* Build Character6 at position 5 */
-				LCD_Custom_Char(6, Character5);  /* Build Character6 at position 6 */
-				LCD_Custom_Char(7, Character5);  /* Build Character6 at position 7 */
-				LCD_Command(0xc0);
-				for(i=0;i<8;i++)		/* function will send data 1 to 8 to lcd */
-				{
-					LCD_Char(i);		/* char at 'i'th position will display on lcd */
-					LCD_Char(' ');		/* space between each custom char. */
-				}
 				sound = C5;
 			}
+			LCD_Command(0xc0);
+			 for ( i=0; i < 8; i++ )
+			 {
+				 if ( i <= val/2 )
+				 {
+					 LCD_Char(0);  // Which is really "Character 5"
+					 LCD_Char(' ');  /* space between each custom char. */
+				 }
+				 else
+				 {
+					 LCD_Char(1);  // Which is really "Character 4"
+					 LCD_Char(' ');  /* space between each custom char. */
+				 }
+			 }
 			break;
 		}
 		return state;
@@ -819,10 +719,16 @@ int SMTick2(int state){
 		nokia_lcd_init();
 		nokia_lcd_clear();
 		nokia_lcd_power(1);
+		
+		unsigned char Character4[8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };	//speaker
+		unsigned char Character5[8] = { 0x01, 0x03, 0x05, 0x09, 0x09, 0x0B, 0x1B, 0x18 };	//music note
+		LCD_Custom_Char(0,Character5);     /* Build Character1 at position 0 */
+        LCD_Custom_Char(1,Character4);     /* Build Character2 at position 1 */
+
 		// . . . etc
 
 		// Period for the tasks
-		unsigned long int SMTick1_calc = 50;
+		unsigned long int SMTick1_calc = 200;
 		unsigned long int SMTick2_calc = 25;
 
 		//Calculating GCD
