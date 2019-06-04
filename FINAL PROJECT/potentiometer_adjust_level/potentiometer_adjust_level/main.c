@@ -8,7 +8,10 @@
 #define F_CPU 8000000UL		/* Define CPU Frequency e.g. here its 8MHz */
 #include <avr/io.h>		/* Include AVR std. library file */
 #include <util/delay.h>		/* Include inbuilt defined Delay header file */
+#include <string.h>
+#include <stdio.h>
 #include "io.c"
+
 #define LCD_Data_Dir DDRC	/* Define LCD data port direction */
 #define LCD_Command_Dir DDRD	/* Define LCD command port direction register */
 #define LCD_Data_Port PORTC	/* Define LCD data port */
@@ -98,55 +101,61 @@ void LCD_Custom_Char (unsigned char loc, unsigned char *msg)
 	}
 }
 
+void USART_Init( unsigned int baud )
+{
+	/* Set baud rate */
+	UBRR0H = (unsigned char)(baud>>8);
+	UBRR0L = (unsigned char)baud;
+	/* Enable receiver and transmitter */
+	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
+	/* Set frame format: 8data, 1stop bit */
+	UCSR0C = (3<<UCSZ00);
+}
+
+void USART_Transmit( unsigned char data )
+{
+	/* Wait for empty transmit buffer */
+	while ( !( UCSR0A & (1<<UDRE0)) )
+	;
+	/* Put data into buffer, sends the data */
+	UDR0 = data;
+}
+unsigned char USART_Receive( void )
+{
+	/* Wait for data to be received */
+	while ( !(UCSR0A & (1<<RXC0)) )
+	;
+	/* Get and return received data from buffer */
+	return UDR0;
+}
+
+
+void printStr(char *str, int maxOut)
+{
+	int idx=0;
+	while ( (str[idx] != 0) && (idx < maxOut) )
+	{
+		USART_Transmit(str[idx]);
+		idx++;
+	}
+}
 
 int main(void)
 {
 	DDRA = 0x00; PORTA = 0xFF;
-//	DDRC = 0xFF; PORTC = 0x00;
-	DDRD = 0xFF; PORTD = 0x00;
-	char i;
-	unsigned short temp = ADC;
+	short range = 0x3FF;
 	
+	USART_Init(50);
 	ADC_init();
-	LCD_Init();
-	LCD_WriteData(temp);
-	
+
+	char array[128] = {0};
 	while (1) {
 		unsigned short temp = ADC;
-		/*
-		if (temp > 0 && temp <= 32) {
-			PORTD = 0x01;
-		}
-		else if (temp > 32 && temp <= 64) {
-			PORTD = 0x03;
-		}
-		else if (temp > 64 && temp <= 96) {
-			PORTD = 0x07;
-		}
-		else if (temp > 96 && temp <= 128) {
-			PORTD = 0x0F;
-		}
-		else if (temp > 128 && temp <= 160) {
-			PORTD = 0x1F;
-		}
-		else if (temp > 160 && temp <= 192) {
-			PORTD = 0x3F;
-		}
-		else if (temp > 192 && temp <= 257) {
-			PORTD = 0x7F;
-		}
-		else if (temp > 257) {
-			PORTD = 0xFF;
-		}*/
-		if (temp >257){
-			PORTD = 0xAA;
-		}
-		else if(temp <=257){
-			PORTD = 0xFF;
-		}
-		
+		short val = (17 * temp) / range;
+		snprintf(array, sizeof(array), "%3d %04x\r\n",val, temp);
+		printStr(array, sizeof(array));
 	}
-		
+		//1e - 3f0
 		
 		
 }
