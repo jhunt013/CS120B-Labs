@@ -8,9 +8,9 @@
 #include "nokia5110.h"
 #include "nokia5110.c"
 
-#define b1 (~PINA & 0x01) //0001
-#define b2 (~PINA & 0x02) //0010
-#define b3 (~PINA & 0x04) //0100
+#define b1 (~PINA & 0x08) //PA3 1000
+#define b2 (~PINA & 0x04) //PA2 0100
+#define b3 (~PINA & 0x02) //PA2 0010
 #define b4 (~PINA & 0x8) //1000
 #define DOT  273, 0,
 #define DASH 273, 273, 273, 0,
