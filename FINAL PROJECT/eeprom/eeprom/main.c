@@ -57,27 +57,15 @@ int main(void)
 	USART_Init(50);
 	USART_Transmit('a');
 
-	/*
-	char R_array[15],W_array[15] = "EEPROM TEST";
-	memset(R_array,0,15);
-	eeprom_busy_wait();		// Initialize LCD
-	eeprom_write_block(W_array,0,strlen(W_array));	// Write W_array from EEPROM address 0
-	eeprom_read_block(R_array,0,strlen(W_array));	// Read EEPROM from address 0
-	
-	//LCD_String(R_array);		 //Print Read_array on LCD
-	USART_Transmit(R_array);
-	*/
+
 	char array[128]= {0};
-		int index = 0;
 	
 	uint8_t ByteOfData ;
 	uint8_t value;
-	value = eeprom_read_byte ((const uint8_t*)64);	/* Read value from
-	64 address */
-	
-	sprintf(array,"something %2x:%c\r\n", (int)value, value);
+	value = eeprom_read_byte ((const uint8_t*)0);	/* Read value from 64 address */
+	eeprom_read_block(array, ((const uint8_t*)64), sizeof(array));
+	printStr("read", 4);
 	printStr(array,sizeof(array));
-	
 	
 	_delay_ms(1);
 	if(value > 'z'){
@@ -86,15 +74,16 @@ int main(void)
 	else if(value < '!'){
 		value = '!';
 	}
-	printStr("after val check\n\r",17);
-	
+
 	ByteOfData = value + 1;
-	eeprom_update_byte (( uint8_t *) 64, ByteOfData );
-	printStr("after upd check\n\r", 17);
+	eeprom_update_byte (( uint8_t *) 0, ByteOfData );
 	
-	sprintf(array,"anything %2x:%c\r\n", (int)value, value);
+	memset(array, 0, sizeof(array));
+	printStr("write", 5);
+	sprintf(array,"something %2x:%c\r\n", (int)value, value);
 	printStr(array,sizeof(array));
-	
+	eeprom_update_block(array, ((uint8_t*)64), sizeof(array));
+		
 	while(1)
 	{
 	}
