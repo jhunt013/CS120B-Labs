@@ -110,16 +110,17 @@ int main()
 	
 	LCD_Custom_Char(0, Character4);  /* Build Character1 at position 0 */
 	LCD_Custom_Char(1, Character4);  /* Build Character2 at position 1 */
-	LCD_Custom_Char(2, Character4);  /* Build Character3 at position 2 */
-	LCD_Custom_Char(3, Character4);  /* Build Character4 at position 3 */
-	LCD_Custom_Char(4, Character4);  /* Build Character5 at position 4 */
-	LCD_Custom_Char(5, Character4);  /* Build Character6 at position 5 */
+	LCD_Custom_Char(2, Character5);  /* Build Character3 at position 2 */
+	LCD_Custom_Char(3, Character5);  /* Build Character4 at position 3 */
+	LCD_Custom_Char(4, Character5);  /* Build Character5 at position 4 */
+	LCD_Custom_Char(5, Character5);  /* Build Character6 at position 5 */
 	LCD_Custom_Char(6, Character4);  /* Build Character6 at position 6 */
 	LCD_Custom_Char(7, Character4);  /* Build Character6 at position 7 */
 
 	LCD_Command(0x80);		/*cursor at home position */
-	LCD_String("Custom char LCD");
+	LCD_String("   morse code ");
 	LCD_Command(0xc0);
+	//LCD_Command(0x80);	
 	
 	for(i=0;i<8;i++)		/* function will send data 1 to 8 to lcd */
 	{
