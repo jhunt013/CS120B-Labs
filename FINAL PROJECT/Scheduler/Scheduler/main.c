@@ -350,7 +350,7 @@ void encode(char val)
 			array_size = sizeof(tBuf)/sizeof(tBuf[0]);
 			return;
 		}
-		case ')':
+		case ' ':
 		{
 			short tBuf[] = { END };
 			memcpy(play, tBuf, sizeof(tBuf));
@@ -709,7 +709,7 @@ int SMTick2(int state){
 		DDRA = 0x00; PORTA = 0xFF;
 		DDRB = 0xFF; PORTB = 0x00;
 		
-		USART_Init(50);
+	
 		ADC_init();
 		LCD_Init();
 
@@ -728,7 +728,7 @@ int SMTick2(int state){
 		// . . . etc
 
 		// Period for the tasks
-		unsigned long int SMTick1_calc = 200;
+		unsigned long int SMTick1_calc = 150;
 		unsigned long int SMTick2_calc = 25;
 
 		//Calculating GCD
@@ -763,6 +763,8 @@ int SMTick2(int state){
 		TimerSet(GCD);
 		TimerOn();
 
+	USART_Init(50);
+	
 		unsigned short i; // Scheduler for-loop iterator
 		while(1) {
 			// Scheduler code
