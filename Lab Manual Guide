@@ -1,0 +1,16 @@
+/*
+Lab 1 - C programming refresher / Intro to C and Rims
+Lab 2 - Intro to Atmel Studios
+Lab 3 - Bit Manipulation (car fuel sensor)
+Lab 4 - State machines (digital lock)
+Lab 5 - Atmega 1284 (hardware light display) *2 days --> first hardware*
+Lab 6 - Timer and Sync SMs (reflex game)
+  press button to stop moving led on led bar
+Lab 7 - LCD
+Lab 8 - A2D (light meter - photoresistor)
+Lab 9 - PWM (music player)
+Lab 10 - Concurrent synch SMs (noise maker device)
+  part 1 - two SMS: 1 for three leds and 1 for blinking led, run at diff intervals
+Lab 11 - Keypad, LCD, Task Scheduler (side-scrolling game) *2 days*
+
+*/
